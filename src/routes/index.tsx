@@ -1,368 +1,826 @@
+import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import {
   ArrowRight,
-  BadgeCheck,
+  ArrowUpRight,
   Bot,
   BrainCircuit,
-  Code2,
+  BriefcaseBusiness,
   Cpu,
   DatabaseZap,
   FileSignature,
-  Fingerprint,
   Globe2,
+  GraduationCap,
   Layers3,
   LockKeyhole,
   Mail,
   MapPin,
+  Menu,
   Music2,
   Network,
   Phone,
+  Plane,
   Rocket,
-  ScanFace,
   ShieldCheck,
-  ShoppingBag,
   Smartphone,
   Sparkles,
-  Star,
-  TerminalSquare,
+  TrendingUp,
   Workflow,
+  X,
 } from "lucide-react";
 
-import heroImage from "@/assets/empire-tech-workspace.jpg";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Empire Digitals | AI Software Development" },
+      { title: "Empire Labs | AI & Product Engineering Studio" },
       {
         name: "description",
         content:
-          "Empire Digitals builds dark-mode modern software, AI apps, vibe-coded prototypes, cybersecurity systems, mobile apps and enterprise web platforms.",
+          "Empire Labs is a Johannesburg software and AI engineering studio building autonomous platforms, secure digital products, mobile apps, and venture software including Nexora AI, PlayMyJam, MrDocs, and The Lifestyle.",
       },
-      { property: "og:title", content: "Empire Digitals | AI Software Development" },
+      { property: "og:title", content: "Empire Labs | AI & Product Engineering Studio" },
       {
         property: "og:description",
         content:
-          "A Johannesburg software studio building AI products, secure platforms, mobile apps and company ventures including PlayMyJam.",
+          "A Johannesburg software studio building autonomous AI products, secure platforms, mobile apps, and company ventures including Nexora AI and PlayMyJam.",
       },
     ],
   }),
   component: Index,
 });
 
-const projects = [
+interface Project {
+  id: string;
+  index: string;
+  name: string;
+  tagline: string;
+  category: string;
+  href: string;
+  domain: string;
+  status: string;
+  icon: typeof Bot;
+  description: string;
+  highlights: string[];
+  featured?: boolean;
+}
+
+const projects: Project[] = [
   {
+    id: "nexora",
+    index: "01",
+    name: "Nexora AI",
+    tagline: "Autonomous Workforce Platform",
+    category: "Autonomous AI",
+    href: "https://nexora.empirelabs.digital/",
+    domain: "nexora.empirelabs.digital",
+    status: "Flagship",
+    icon: BrainCircuit,
+    featured: true,
+    description:
+      "An autonomous AI workforce engineered to accelerate high-stakes human milestones — drafting tailored CVs, assembling international relocation and visa dossiers, preparing investor pitch memos, and executing global scholarship applications with autonomous outreach.",
+    highlights: [
+      "Employment & CV agents",
+      "Relocation & visa dossiers",
+      "Investor pitch memos",
+      "Global scholarship outreach",
+    ],
+  },
+  {
+    id: "playmyjam",
+    index: "02",
     name: "PlayMyJam",
-    badge: "Music bidding platform",
+    tagline: "Live Music Bidding Platform",
+    category: "Music Tech",
     href: "https://playmyjam.empiredigitals.org/",
+    domain: "playmyjam.empiredigitals.org",
+    status: "Live",
     icon: Music2,
     description:
-      "A nightlife music product where fans influence live sets, DJs monetize demand, venues discover audience taste and promoters build music-led communities.",
-    metrics: ["Live song bidding", "DJ dashboards", "Club discovery"],
+      "A nightlife music economy where fans bid to influence live sets, DJs monetize real-time demand, venues uncover audience taste, and promoters build music-led communities.",
+    highlights: ["Live song bidding", "DJ dashboards", "Club discovery"],
   },
   {
-    name: "Valid",
-    badge: "AI anti-counterfeit system",
-    href: "https://valid.empiredigitals.org/",
-    icon: ShieldCheck,
-    description:
-      "Brand-protection software for product authentication, QR identity, verification scans and traceability workflows across fashion and consumer goods.",
-    metrics: ["QR verification", "Counterfeit defense", "Product intelligence"],
-  },
-  {
+    id: "mrdocs",
+    index: "03",
     name: "MrDocs",
-    badge: "Biometric document security",
+    tagline: "Biometric Document Security",
+    category: "Trust & Identity",
     href: "https://play.google.com/store/apps/details?id=com.empiredigitals.doneDeal",
+    domain: "play.google.com/store",
+    status: "Android",
     icon: FileSignature,
     description:
-      "A secure signing experience that connects facial verification, tamper-aware QR codes and identity evidence for contracts, NDAs and sensitive documents.",
-    metrics: ["Selfie proof", "Secure QR", "Audit trails"],
+      "A tamper-evident signing platform pairing facial verification, cryptographic QR codes, and verifiable identity evidence for contracts, NDAs, and sensitive agreements.",
+    highlights: ["Facial verification", "Tamper-aware QR", "Verifiable audit trails"],
   },
   {
+    id: "lifestyle",
+    index: "04",
     name: "The Lifestyle",
-    badge: "On-demand lifestyle network",
+    tagline: "On-Demand Lifestyle Network",
+    category: "Marketplace",
     href: "https://lifestyle.empiredigitals.org/",
+    domain: "lifestyle.empiredigitals.org",
+    status: "Live",
     icon: Sparkles,
     description:
-      "A premium marketplace for bookings, social experiences, transport and lifestyle services with polished mobile-first user journeys.",
-    metrics: ["Marketplace UX", "Bookings", "Concierge flows"],
+      "A curated marketplace connecting members to bookings, social experiences, private transport, and concierge services through polished mobile-first journeys.",
+    highlights: ["Marketplace UX", "Concierge bookings", "Mobile-first flows"],
+  },
+];
+
+const nexoraTracks = [
+  {
+    label: "Employment",
+    detail: "Tailored CVs & autonomous job applications",
+    icon: BriefcaseBusiness,
   },
   {
-    name: "SmartStore",
-    badge: "Commerce infrastructure",
-    href: "https://smartstore.empiredigitals.org/",
-    icon: ShoppingBag,
-    description:
-      "Digital storefront tooling for sellers that need fast online presence, payment-ready commerce flows and customer acquisition foundations.",
-    metrics: ["Online stores", "Seller tools", "Growth pages"],
+    label: "Relocation & Visas",
+    detail: "Structured international pathway dossiers",
+    icon: Plane,
+  },
+  {
+    label: "Investors",
+    detail: "Fundraising pitch memos & outreach",
+    icon: TrendingUp,
+  },
+  {
+    label: "Scholarships",
+    detail: "Global scholarship matching & drafting",
+    icon: GraduationCap,
   },
 ];
 
 const services = [
   {
-    title: "AI Products & Automation",
+    index: "01",
+    title: "Autonomous AI & Agents",
     icon: BrainCircuit,
-    copy: "Custom copilots, fraud signals, smart workflows, document intelligence and practical AI features that reduce manual work.",
+    copy: "Production AI agents, custom copilots, document intelligence, and automated outreach pipelines designed around measurable outcomes.",
   },
   {
-    title: "Vibe Coding Sprints",
+    index: "02",
+    title: "Rapid MVP Sprints",
     icon: Bot,
-    copy: "Rapid product ideation, AI-assisted prototyping and launchable MVPs for founders who need momentum without losing engineering quality.",
+    copy: "AI-accelerated prototyping paired with senior architecture so founders go from concept to launchable product in weeks, not quarters.",
   },
   {
-    title: "Cybersecurity Engineering",
+    index: "03",
+    title: "Security & Identity Systems",
     icon: LockKeyhole,
-    copy: "Authentication, role-based access, secure APIs, audit trails, QR trust layers and threat-aware architecture for sensitive products.",
+    copy: "Biometric verification, role-based access, cryptographic QR trust layers, hardened APIs, and verifiable audit trails.",
   },
   {
+    index: "04",
     title: "Web & Mobile Platforms",
     icon: Smartphone,
-    copy: "Responsive web apps, native-feeling mobile experiences, dashboards, portals and scalable systems built for real business operations.",
+    copy: "High-craft web applications, native-feeling mobile products, real-time dashboards, and multi-sided marketplaces built to scale.",
   },
   {
-    title: "Cloud & Data Systems",
+    index: "05",
+    title: "Cloud & Data Architecture",
     icon: DatabaseZap,
-    copy: "Databases, storage, server functions, analytics pipelines and backend workflows for products that need reliability from day one.",
+    copy: "Resilient backend infrastructure, serverless workflows, data pipelines, and observability engineered for day-one reliability.",
   },
   {
-    title: "Product Design Systems",
+    index: "06",
+    title: "Interface & Design Systems",
     icon: Layers3,
-    copy: "Sharp UI, design tokens, reusable components, conversion-focused interfaces and brand-consistent digital experiences.",
+    copy: "Cohesive visual identities, reusable component libraries, and conversion-focused product interfaces with zero template bloat.",
   },
 ];
 
 const capabilities = [
-  { label: "AI copilots", icon: Cpu },
-  { label: "Secure portals", icon: ShieldCheck },
-  { label: "Mobile apps", icon: Smartphone },
-  { label: "API platforms", icon: Network },
-  { label: "Automation", icon: Workflow },
-  { label: "MVP launches", icon: Rocket },
+  { label: "Autonomous AI", icon: Cpu },
+  { label: "Secure Identity", icon: ShieldCheck },
+  { label: "Mobile & Web", icon: Smartphone },
+  { label: "API Infrastructure", icon: Network },
+  { label: "Workflow Automation", icon: Workflow },
+  { label: "Venture Launches", icon: Rocket },
 ];
 
-const process = [
-  "Map the product opportunity, risks and user journey.",
-  "Prototype fast with AI-assisted build loops and strong design direction.",
-  "Engineer secure data, auth, integrations and product workflows.",
-  "Launch, measure and improve the platform around real user behavior.",
+const processSteps = [
+  {
+    step: "01",
+    title: "Frame the system",
+    copy: "Map the market opportunity, technical risks, and core user loops before writing a line of production code.",
+  },
+  {
+    step: "02",
+    title: "Prototype at velocity",
+    copy: "Use AI-assisted engineering loops and tight design direction to put interactive software in front of users fast.",
+  },
+  {
+    step: "03",
+    title: "Harden for scale",
+    copy: "Lock down authentication, data models, integrations, and edge-case resilience with senior engineering review.",
+  },
+  {
+    step: "04",
+    title: "Ship & compound",
+    copy: "Launch cleanly, instrument real user behavior, and iterate continuously as the product gains traction.",
+  },
 ];
 
 function Index() {
+  const [activeProjectId, setActiveProjectId] = useState<string>(projects[0].id);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const activeProject = projects.find((p) => p.id === activeProjectId) ?? projects[0];
+  const ActiveIcon = activeProject.icon;
+  const featuredProject = projects[0];
+  const secondaryProjects = projects.slice(1);
+
   return (
-    <main className="min-h-screen overflow-hidden bg-background text-foreground">
-      <section className="relative isolate min-h-[92vh] bg-hero-gradient text-foreground">
-        <div className="absolute inset-0 grid-glow opacity-40" aria-hidden="true" />
-        <img
-          src={heroImage}
-          alt="Empire Digitals software engineers collaborating in a modern technology studio"
-          className="absolute inset-0 h-full w-full object-cover opacity-28 mix-blend-screen"
-          width={1600}
-          height={1000}
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/70 to-background" aria-hidden="true" />
+    <div className="relative min-h-screen overflow-x-clip bg-background text-foreground">
+      {/* Ambient top mesh & subtle dot texture */}
+      <div className="pointer-events-none fixed inset-0 -z-10 bg-mesh-hero" aria-hidden="true" />
+      <div
+        className="pointer-events-none fixed inset-0 -z-10 bg-dot-grid opacity-35 [mask-image:radial-gradient(ellipse_at_top,black_30%,transparent_78%)]"
+        aria-hidden="true"
+      />
 
-        <header className="relative z-10 mx-auto flex max-w-7xl items-center justify-between px-6 py-6 lg:px-8">
-          <a href="/" className="group flex items-center gap-3" aria-label="Empire Digitals home">
-            <span className="flex size-11 items-center justify-center rounded-lg border border-border bg-card text-primary shadow-panel backdrop-blur-md transition-transform group-hover:scale-105">
-              <Globe2 className="size-5" />
+      {/* Sticky Header */}
+      <header className="sticky top-0 z-50 border-b border-border/70 bg-background/75 backdrop-blur-xl">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 lg:px-8">
+          <a href="#" className="group flex items-center gap-3" aria-label="Empire Labs home">
+            <span className="relative flex size-9 items-center justify-center rounded-lg border border-border bg-secondary text-foreground transition-colors group-hover:border-primary/50 group-hover:text-primary">
+              <Globe2 className="size-4" />
             </span>
-            <span className="text-lg font-black tracking-tight">Empire Digitals</span>
+            <div className="flex items-baseline gap-2.5">
+              <span className="font-display text-base font-bold tracking-tight">Empire Labs</span>
+              <span className="hidden font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground sm:inline">
+                JHB // ZA
+              </span>
+            </div>
           </a>
-          <nav className="hidden items-center gap-7 text-sm font-semibold text-muted-foreground md:flex">
-            <a className="transition-colors hover:text-foreground" href="#services">Services</a>
-            <a className="transition-colors hover:text-foreground" href="#projects">Projects</a>
-            <a className="transition-colors hover:text-foreground" href="#contact">Contact</a>
-          </nav>
-          <Button asChild variant="glass" className="hidden md:inline-flex">
-            <a href="mailto:info@empiredigitals.org">Start a project</a>
-          </Button>
-        </header>
 
-        <div className="relative z-10 mx-auto grid max-w-7xl gap-12 px-6 pb-16 pt-16 lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:pb-24 lg:pt-24">
-          <div className="reveal-up max-w-3xl">
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm font-semibold text-muted-foreground shadow-panel backdrop-blur-md">
-              <BadgeCheck className="size-4 text-primary" /> Johannesburg software, AI and security studio
-            </div>
-            <h1 className="text-balance text-5xl font-black leading-[0.95] tracking-tight md:text-7xl lg:text-8xl">
-              Dark-mode software for bold digital empires.
-            </h1>
-            <p className="mt-7 max-w-2xl text-lg leading-8 text-muted-foreground md:text-xl">
-              Empire Digitals designs and engineers AI products, secure platforms, mobile apps, web systems and vibe-coded MVPs for companies that want speed, polish and serious technical depth.
-            </p>
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <Button asChild variant="hero" size="lg" className="h-12 px-6">
-                <a href="#projects">Explore the portfolio <ArrowRight className="size-4" /></a>
+          <nav className="hidden items-center gap-8 text-sm font-medium text-muted-foreground md:flex">
+            <a className="transition-colors hover:text-foreground" href="#projects">
+              Ventures
+            </a>
+            <a className="transition-colors hover:text-foreground" href="#services">
+              Capabilities
+            </a>
+            <a className="transition-colors hover:text-foreground" href="#process">
+              Process
+            </a>
+            <a className="transition-colors hover:text-foreground" href="#contact">
+              Contact
+            </a>
+          </nav>
+
+          <div className="hidden items-center gap-3 md:flex">
+            <Button asChild variant="glass" size="sm">
+              <a href="mailto:info@empirelabs.digital">Start a project</a>
+            </Button>
+          </div>
+
+          <button
+            type="button"
+            className="inline-flex size-9 items-center justify-center rounded-lg border border-border bg-card text-foreground md:hidden"
+            onClick={() => setMobileMenuOpen((prev) => !prev)}
+            aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={mobileMenuOpen}
+          >
+            {mobileMenuOpen ? <X className="size-4" /> : <Menu className="size-4" />}
+          </button>
+        </div>
+
+        {mobileMenuOpen && (
+          <div className="border-t border-border bg-background/95 px-6 py-4 backdrop-blur-xl md:hidden">
+            <nav className="flex flex-col gap-3 text-sm font-medium text-muted-foreground">
+              <a
+                className="py-1.5 transition-colors hover:text-foreground"
+                href="#projects"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Ventures
+              </a>
+              <a
+                className="py-1.5 transition-colors hover:text-foreground"
+                href="#services"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Capabilities
+              </a>
+              <a
+                className="py-1.5 transition-colors hover:text-foreground"
+                href="#process"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Process
+              </a>
+              <a
+                className="py-1.5 transition-colors hover:text-foreground"
+                href="#contact"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Contact
+              </a>
+              <Button asChild variant="hero" size="sm" className="mt-2 w-full">
+                <a href="mailto:info@empirelabs.digital" onClick={() => setMobileMenuOpen(false)}>
+                  Start a project
+                </a>
               </Button>
-              <Button asChild variant="glass" size="lg" className="h-12 px-6">
-                <a href="tel:+27105102699">Call +27 10 510 2699</a>
-              </Button>
+            </nav>
+          </div>
+        )}
+      </header>
+
+      <main>
+        {/* Hero Section */}
+        <section className="relative px-6 pb-20 pt-16 lg:px-8 lg:pb-28 lg:pt-24">
+          <div className="mx-auto grid max-w-7xl items-start gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
+            {/* Left Copy */}
+            <div className="reveal-up">
+              <div className="inline-flex items-center gap-2.5 rounded-full border border-border bg-card/80 px-3.5 py-1.5 text-xs font-medium text-muted-foreground backdrop-blur-md">
+                <span className="relative flex size-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal opacity-70" />
+                  <span className="relative inline-flex size-2 rounded-full bg-signal" />
+                </span>
+                Johannesburg AI &amp; Software Engineering Studio
+              </div>
+
+              <h1 className="mt-7 text-balance font-display text-5xl font-bold leading-[1.02] tracking-[-0.03em] sm:text-6xl lg:text-7xl">
+                Engineering <span className="text-gradient-studio">autonomous AI</span> &amp;
+                high-trust software.
+              </h1>
+
+              <p className="mt-6 max-w-xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
+                Empire Labs designs and builds AI workforce platforms, secure mobile apps, and
+                venture-grade digital products — combining rapid AI-native execution with senior
+                systems engineering.
+              </p>
+
+              <div className="mt-9 flex flex-wrap items-center gap-3.5">
+                <Button asChild variant="hero" size="lg">
+                  <a href="#projects">
+                    Explore ventures <ArrowRight className="size-4" />
+                  </a>
+                </Button>
+                <Button asChild variant="glass" size="lg">
+                  <a href="https://nexora.empirelabs.digital/" target="_blank" rel="noreferrer">
+                    Launch Nexora AI <ArrowUpRight className="size-4" />
+                  </a>
+                </Button>
+              </div>
+
+              {/* Studio Metrics Strip */}
+              <div className="mt-12 grid max-w-xl grid-cols-3 gap-6 border-t border-border/80 pt-7">
+                <div>
+                  <p className="font-display text-2xl font-bold tracking-tight sm:text-3xl">04</p>
+                  <p className="mt-1 text-xs text-muted-foreground">Live ventures shipped</p>
+                </div>
+                <div>
+                  <p className="font-display text-2xl font-bold tracking-tight sm:text-3xl">AI+</p>
+                  <p className="mt-1 text-xs text-muted-foreground">Autonomous agent systems</p>
+                </div>
+                <div>
+                  <p className="font-display text-2xl font-bold tracking-tight sm:text-3xl">JHB</p>
+                  <p className="mt-1 text-xs text-muted-foreground">Built in South Africa</p>
+                </div>
+              </div>
             </div>
-            <div className="mt-10 grid max-w-2xl grid-cols-2 gap-3 sm:grid-cols-3">
+
+            {/* Right Interactive Venture Console */}
+            <div className="reveal-up [animation-delay:120ms]">
+              <div className="overflow-hidden rounded-2xl border border-border bg-card-sheen shadow-panel backdrop-blur-xl">
+                {/* Window Header */}
+                <div className="flex items-center justify-between border-b border-border/80 px-5 py-3.5">
+                  <div className="flex items-center gap-2">
+                    <span className="size-2.5 rounded-full bg-border" />
+                    <span className="size-2.5 rounded-full bg-border" />
+                    <span className="size-2.5 rounded-full bg-border" />
+                    <span className="ml-2 font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
+                      venture.index
+                    </span>
+                  </div>
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-signal/30 bg-signal/10 px-2.5 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-signal">
+                    <span className="size-1.5 rounded-full bg-signal" /> 4 Active
+                  </span>
+                </div>
+
+                {/* Project Switcher Tabs */}
+                <div className="grid grid-cols-2 gap-1.5 border-b border-border/80 bg-background/40 p-2.5 sm:grid-cols-4">
+                  {projects.map((project) => {
+                    const isActive = project.id === activeProject.id;
+                    return (
+                      <button
+                        key={project.id}
+                        type="button"
+                        onClick={() => setActiveProjectId(project.id)}
+                        className={cn(
+                          "flex flex-col items-start rounded-lg px-3 py-2 text-left transition-all",
+                          isActive
+                            ? "bg-secondary text-foreground shadow-sm ring-1 ring-primary/40"
+                            : "text-muted-foreground hover:bg-secondary/50 hover:text-foreground",
+                        )}
+                      >
+                        <span className="font-mono text-[10px] text-primary">{project.index}</span>
+                        <span className="mt-0.5 truncate text-xs font-semibold">
+                          {project.name}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Active Venture Preview */}
+                <div className="p-6">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex items-center gap-3.5">
+                      <span className="flex size-12 shrink-0 items-center justify-center rounded-xl border border-primary/30 bg-primary/10 text-primary">
+                        <ActiveIcon className="size-5" />
+                      </span>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <h2 className="font-display text-xl font-bold">{activeProject.name}</h2>
+                          <span className="rounded-full border border-border bg-secondary px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                            {activeProject.status}
+                          </span>
+                        </div>
+                        <p className="text-sm text-primary">{activeProject.tagline}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <p className="mt-5 text-sm leading-6 text-muted-foreground">
+                    {activeProject.description}
+                  </p>
+
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    {activeProject.highlights.map((item) => (
+                      <span
+                        key={item}
+                        className="rounded-md border border-border/80 bg-background/60 px-2.5 py-1 font-mono text-[11px] text-secondary-foreground"
+                      >
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="mt-6 flex items-center justify-between border-t border-border/80 pt-5">
+                    <span className="truncate font-mono text-xs text-muted-foreground">
+                      {activeProject.domain}
+                    </span>
+                    <a
+                      href={activeProject.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold text-foreground transition-colors hover:text-primary"
+                    >
+                      Visit platform <ArrowUpRight className="size-4" />
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Capability Ribbon */}
+          <div className="mx-auto mt-16 max-w-7xl border-y border-border/70 py-5">
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
               {capabilities.map((item) => {
                 const Icon = item.icon;
                 return (
-                  <div key={item.label} className="flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-3 text-sm font-bold shadow-panel backdrop-blur-md">
-                    <Icon className="size-4 text-primary" /> {item.label}
+                  <div
+                    key={item.label}
+                    className="flex items-center gap-2.5 text-xs font-medium text-muted-foreground"
+                  >
+                    <Icon className="size-4 shrink-0 text-primary" />
+                    <span>{item.label}</span>
                   </div>
                 );
               })}
             </div>
           </div>
+        </section>
 
-          <div className="reveal-up rounded-2xl border border-border bg-card p-4 shadow-glow backdrop-blur-xl [animation-delay:120ms]">
-            <div className="rounded-xl bg-panel-gradient p-5 shadow-panel">
-              <div className="mb-6 flex items-center justify-between">
-                <span className="text-sm font-bold uppercase tracking-[0.24em] text-muted-foreground">Build console</span>
-                <span className="rounded-full bg-accent-gradient px-3 py-1 text-xs font-black text-primary-foreground">ONLINE</span>
+        {/* Ventures / Portfolio Section */}
+        <section id="projects" className="px-6 py-20 lg:px-8 lg:py-28">
+          <div className="mx-auto max-w-7xl">
+            <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+              <div className="max-w-2xl">
+                <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-primary">
+                  Selected Ventures
+                </p>
+                <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-5xl">
+                  Platforms engineered with real market logic.
+                </h2>
               </div>
-              <div className="rounded-lg border border-border bg-background/50 p-4 font-mono text-sm leading-7 text-muted-foreground">
-                <p><span className="text-primary">empire</span> init ai-platform</p>
-                <p><span className="text-primary">stack</span> web · mobile · cloud · security</p>
-                <p><span className="text-primary">mode</span> vibe-code sprint + senior review</p>
-                <p><span className="text-primary">ship</span> polished product, not placeholder UI</p>
+              <p className="max-w-sm text-sm leading-6 text-muted-foreground">
+                Autonomous AI agents, live nightlife music economies, biometric document security,
+                and on-demand lifestyle networks built under one studio roof.
+              </p>
+            </div>
+
+            {/* Flagship Spotlight: Nexora AI */}
+            <article className="group relative mt-12 overflow-hidden rounded-2xl border border-primary/30 bg-card-sheen p-7 shadow-glow transition-all hover:border-primary/50 md:p-10">
+              <div
+                className="pointer-events-none absolute -right-24 -top-24 size-72 rounded-full bg-primary/15 blur-3xl transition-opacity group-hover:opacity-100"
+                aria-hidden="true"
+              />
+              <div className="relative grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
+                <div>
+                  <div className="flex flex-wrap items-center gap-2.5">
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/15 px-3 py-1 font-mono text-[11px] font-semibold uppercase tracking-wider text-primary">
+                      <BrainCircuit className="size-3.5" /> Flagship Venture
+                    </span>
+                    <span className="rounded-full border border-border bg-background/60 px-3 py-1 font-mono text-[11px] text-muted-foreground">
+                      {featuredProject.domain}
+                    </span>
+                  </div>
+
+                  <h3 className="mt-5 font-display text-3xl font-bold tracking-tight sm:text-4xl">
+                    {featuredProject.name}
+                  </h3>
+                  <p className="mt-1 text-base font-medium text-primary">
+                    {featuredProject.tagline}
+                  </p>
+
+                  <p className="mt-5 max-w-2xl text-sm leading-7 text-muted-foreground sm:text-base">
+                    {featuredProject.description}
+                  </p>
+
+                  <div className="mt-7 flex flex-wrap items-center gap-4">
+                    <Button asChild variant="hero" size="default">
+                      <a href={featuredProject.href} target="_blank" rel="noreferrer">
+                        Explore Nexora AI <ArrowUpRight className="size-4" />
+                      </a>
+                    </Button>
+                    <span className="font-mono text-xs text-muted-foreground">
+                      Autonomous outreach · Multi-domain agents
+                    </span>
+                  </div>
+                </div>
+
+                {/* Nexora Agent Tracks Visual Panel */}
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {nexoraTracks.map((track) => {
+                    const TrackIcon = track.icon;
+                    return (
+                      <div
+                        key={track.label}
+                        className="rounded-xl border border-border/80 bg-background/65 p-4 backdrop-blur-md transition-colors hover:border-primary/40"
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="flex size-9 items-center justify-center rounded-lg bg-primary/12 text-primary">
+                            <TrackIcon className="size-4" />
+                          </span>
+                          <span className="font-mono text-[10px] uppercase tracking-wider text-signal">
+                            Active
+                          </span>
+                        </div>
+                        <p className="mt-3.5 font-display text-sm font-bold">{track.label}</p>
+                        <p className="mt-1 text-xs leading-5 text-muted-foreground">
+                          {track.detail}
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
-              <div className="mt-5 grid gap-3">
-                {projects.slice(0, 4).map((project, index) => {
-                  const Icon = project.icon;
-                  return (
-                    <a key={project.name} href={project.href} className="group flex items-center gap-4 rounded-xl border border-border bg-card p-4 transition-all hover:-translate-y-1 hover:shadow-panel">
-                      <span className="flex size-12 shrink-0 items-center justify-center rounded-lg bg-secondary text-primary"><Icon className="size-5" /></span>
-                      <span className="min-w-0 flex-1">
-                        <span className="block font-black">{project.name}</span>
-                        <span className="block truncate text-sm text-muted-foreground">{project.badge}</span>
+            </article>
+
+            {/* Remaining 3 Ventures in Clean 3-Column Bento Grid */}
+            <div className="mt-6 grid gap-6 md:grid-cols-3">
+              {secondaryProjects.map((project) => {
+                const Icon = project.icon;
+                return (
+                  <article
+                    key={project.id}
+                    className="group flex flex-col justify-between rounded-2xl border border-border bg-card-sheen p-7 shadow-panel transition-all hover:-translate-y-1 hover:border-foreground/20"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="flex size-11 items-center justify-center rounded-xl border border-border bg-secondary text-primary transition-colors group-hover:border-primary/40">
+                          <Icon className="size-5" />
+                        </span>
+                        <span className="font-mono text-xs text-muted-foreground">
+                          {project.index} / {project.category}
+                        </span>
+                      </div>
+
+                      <h3 className="mt-6 font-display text-2xl font-bold tracking-tight">
+                        {project.name}
+                      </h3>
+                      <p className="mt-1 text-sm font-medium text-primary">{project.tagline}</p>
+
+                      <p className="mt-4 text-sm leading-6 text-muted-foreground">
+                        {project.description}
+                      </p>
+                    </div>
+
+                    <div className="mt-6 border-t border-border/70 pt-5">
+                      <div className="flex flex-wrap gap-1.5">
+                        {project.highlights.map((metric) => (
+                          <span
+                            key={metric}
+                            className="rounded-md bg-secondary/90 px-2.5 py-1 font-mono text-[11px] text-secondary-foreground"
+                          >
+                            {metric}
+                          </span>
+                        ))}
+                      </div>
+                      <a
+                        href={project.href}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-foreground transition-colors group-hover:text-primary"
+                      >
+                        Explore project{" "}
+                        <ArrowUpRight className="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                      </a>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* Services / Capabilities Section */}
+        <section
+          id="services"
+          className="border-y border-border/70 bg-surface/65 px-6 py-20 lg:px-8 lg:py-28"
+        >
+          <div className="mx-auto max-w-7xl">
+            <div className="max-w-2xl">
+              <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-primary">
+                Capabilities
+              </p>
+              <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-5xl">
+                AI velocity, security discipline, and product craft.
+              </h2>
+            </div>
+
+            <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+              {services.map((service) => {
+                const Icon = service.icon;
+                return (
+                  <article
+                    key={service.title}
+                    className="group rounded-2xl border border-border bg-card/85 p-6 transition-all hover:border-primary/40 hover:bg-surface-elevated"
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="flex size-10 items-center justify-center rounded-lg border border-border bg-secondary text-primary transition-colors group-hover:border-primary/40">
+                        <Icon className="size-5" />
                       </span>
-                      <span className="text-sm font-black text-primary">0{index + 1}</span>
-                    </a>
-                  );
-                })}
+                      <span className="font-mono text-xs text-muted-foreground">
+                        {service.index}
+                      </span>
+                    </div>
+                    <h3 className="mt-6 font-display text-lg font-bold tracking-tight">
+                      {service.title}
+                    </h3>
+                    <p className="mt-2.5 text-sm leading-6 text-muted-foreground">{service.copy}</p>
+                  </article>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* Engineering Process Section */}
+        <section id="process" className="px-6 py-20 lg:px-8 lg:py-28">
+          <div className="mx-auto max-w-7xl">
+            <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+              <div className="max-w-2xl">
+                <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-primary">
+                  How We Ship
+                </p>
+                <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-5xl">
+                  Creative where it matters. Rigorous where it counts.
+                </h2>
+              </div>
+              <p className="max-w-md text-sm leading-6 text-muted-foreground">
+                We combine AI-assisted build loops with senior engineering discipline — delivering
+                clean interfaces, resilient data systems, and production-ready launches.
+              </p>
+            </div>
+
+            <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {processSteps.map((item) => (
+                <div
+                  key={item.step}
+                  className="relative rounded-2xl border border-border bg-card-sheen p-6 shadow-panel"
+                >
+                  <span className="font-mono text-xs font-semibold text-primary">{item.step}</span>
+                  <h3 className="mt-4 font-display text-lg font-bold tracking-tight">
+                    {item.title}
+                  </h3>
+                  <p className="mt-2.5 text-sm leading-6 text-muted-foreground">{item.copy}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Closing CTA Band */}
+        <section className="px-6 pb-20 lg:px-8 lg:pb-28">
+          <div className="mx-auto max-w-7xl overflow-hidden rounded-3xl border border-primary/25 bg-card-sheen p-8 shadow-glow md:p-14">
+            <div className="grid items-center gap-8 lg:grid-cols-[1.2fr_0.8fr]">
+              <div>
+                <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-primary">
+                  Start Building
+                </p>
+                <h2 className="mt-3 font-display text-3xl font-bold tracking-tight sm:text-5xl">
+                  Ready to ship something beyond a template?
+                </h2>
+                <p className="mt-4 max-w-xl text-sm leading-7 text-muted-foreground sm:text-base">
+                  Whether you need an autonomous AI platform, a high-trust mobile app, or a rapid
+                  venture MVP, our Johannesburg engineering team is ready to partner.
+                </p>
+              </div>
+              <div className="flex flex-col gap-3 sm:flex-row lg:justify-end">
+                <Button asChild variant="hero" size="lg">
+                  <a href="mailto:info@empirelabs.digital">
+                    <Mail className="size-4" /> Email the studio
+                  </a>
+                </Button>
+                <Button asChild variant="glass" size="lg">
+                  <a href="tel:+27105102699">
+                    <Phone className="size-4" /> +27 10 510 2699
+                  </a>
+                </Button>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </main>
 
-      <section id="services" className="px-6 py-24 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="max-w-3xl">
-            <p className="text-sm font-black uppercase tracking-[0.28em] text-primary">What we build</p>
-            <h2 className="mt-4 text-4xl font-black tracking-tight md:text-6xl">Software with AI speed, security discipline and product taste.</h2>
-          </div>
-          <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {services.map((service) => {
-              const Icon = service.icon;
-              return (
-                <article key={service.title} className="group rounded-xl border border-border bg-card p-6 shadow-panel transition-all hover:-translate-y-1 hover:border-primary/50">
-                  <div className="mb-7 flex size-13 items-center justify-center rounded-lg bg-accent-gradient text-primary-foreground shadow-glow"><Icon className="size-6" /></div>
-                  <h3 className="text-xl font-black">{service.title}</h3>
-                  <p className="mt-3 leading-7 text-muted-foreground">{service.copy}</p>
-                </article>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      <section className="border-y border-border bg-surface px-6 py-20 lg:px-8">
-        <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
+      {/* Footer */}
+      <footer id="contact" className="border-t border-border/80 bg-surface/80 px-6 py-14 lg:px-8">
+        <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-[1.2fr_0.8fr_1fr]">
           <div>
-            <p className="text-sm font-black uppercase tracking-[0.28em] text-primary">Engineering approach</p>
-            <h2 className="mt-4 text-4xl font-black tracking-tight md:text-5xl">Creative when it matters. Rigorous where it counts.</h2>
-            <p className="mt-5 leading-8 text-muted-foreground">
-              We use AI-assisted development to move quickly, then harden the work with architecture, secure data handling, clean interfaces and launch-ready execution.
+            <div className="flex items-center gap-2.5">
+              <span className="flex size-8 items-center justify-center rounded-lg border border-border bg-secondary text-primary">
+                <Globe2 className="size-4" />
+              </span>
+              <span className="font-display text-lg font-bold tracking-tight">Empire Labs</span>
+            </div>
+            <p className="mt-3 max-w-sm text-sm leading-6 text-muted-foreground">
+              Software, autonomous AI, and digital venture engineering studio based in Johannesburg,
+              South Africa.
             </p>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {process.map((item, index) => (
-              <div key={item} className="rounded-xl border border-border bg-card p-6 shadow-panel">
-                <div className="mb-5 flex size-10 items-center justify-center rounded-lg bg-secondary font-black text-primary">{index + 1}</div>
-                <p className="font-bold leading-7">{item}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      <section id="projects" className="px-6 py-24 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
-            <div className="max-w-3xl">
-              <p className="text-sm font-black uppercase tracking-[0.28em] text-primary">Company projects</p>
-              <h2 className="mt-4 text-4xl font-black tracking-tight md:text-6xl">A portfolio of platforms with real market logic.</h2>
+          <div>
+            <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+              Ventures
+            </p>
+            <ul className="mt-4 space-y-2.5 text-sm">
+              {projects.map((project) => (
+                <li key={project.id}>
+                  <a
+                    href={project.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1.5 text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    {project.name} <ArrowUpRight className="size-3.5" />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+              Contact
+            </p>
+            <div className="mt-4 flex flex-col gap-2.5 text-sm">
+              <a
+                className="inline-flex items-center gap-2 text-muted-foreground transition-colors hover:text-primary"
+                href="tel:+27105102699"
+              >
+                <Phone className="size-4 text-primary" /> +27 10 510 2699
+              </a>
+              <a
+                className="inline-flex items-center gap-2 text-muted-foreground transition-colors hover:text-primary"
+                href="mailto:info@empirelabs.digital"
+              >
+                <Mail className="size-4 text-primary" />{" "}
+                <span suppressHydrationWarning>info@empirelabs.digital</span>
+              </a>
+              <span className="inline-flex items-start gap-2 text-muted-foreground">
+                <MapPin className="mt-0.5 size-4 shrink-0 text-primary" />
+                <span>80 Booysens Rd, Selby, Johannesburg · Mon–Sat, 09:00–17:00</span>
+              </span>
             </div>
-            <p className="max-w-sm leading-7 text-muted-foreground">Music technology, anti-counterfeit AI, secure documents, lifestyle marketplaces and commerce systems built under one company vision.</p>
-          </div>
-          <div className="mt-12 grid gap-6 lg:grid-cols-2">
-            {projects.map((project) => {
-              const Icon = project.icon;
-              return (
-                <article key={project.name} className="group overflow-hidden rounded-xl border border-border bg-card shadow-panel transition-all hover:-translate-y-1 hover:shadow-glow">
-                  <div className="h-1.5 bg-accent-gradient" />
-                  <div className="p-7">
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="flex items-center gap-4">
-                        <span className="flex size-14 items-center justify-center rounded-lg bg-secondary text-primary"><Icon className="size-6" /></span>
-                        <div>
-                          <h3 className="text-2xl font-black">{project.name}</h3>
-                          <p className="text-sm font-bold text-primary">{project.badge}</p>
-                        </div>
-                      </div>
-                      <Star className="size-5 text-accent" />
-                    </div>
-                    <p className="mt-6 leading-8 text-muted-foreground">{project.description}</p>
-                    <div className="mt-6 flex flex-wrap gap-2">
-                      {project.metrics.map((metric) => (
-                        <span key={metric} className="rounded-full bg-secondary px-3 py-1 text-xs font-bold text-secondary-foreground">{metric}</span>
-                      ))}
-                    </div>
-                    <a href={project.href} className="mt-7 inline-flex items-center gap-2 font-black text-primary transition-transform group-hover:translate-x-1">
-                      Explore project <ArrowRight className="size-4" />
-                    </a>
-                  </div>
-                </article>
-              );
-            })}
           </div>
         </div>
-      </section>
 
-      <section className="px-6 pb-24 lg:px-8">
-        <div className="mx-auto grid max-w-7xl gap-10 rounded-2xl border border-border bg-panel-gradient p-8 shadow-glow md:grid-cols-[0.9fr_1.1fr] md:p-12">
-          <div>
-            <p className="text-sm font-black uppercase tracking-[0.28em] text-primary">Why Empire Digitals</p>
-            <h2 className="mt-4 text-4xl font-black tracking-tight md:text-5xl">A studio for founders and teams who want more than a template.</h2>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-3">
-            {[
-              { text: "AI-native delivery without junior-looking shortcuts", icon: TerminalSquare },
-              { text: "Security-first systems for identity and trust", icon: ScanFace },
-              { text: "Product thinking from prototype to growth", icon: Fingerprint },
-            ].map((item) => {
-              const Icon = item.icon;
-              return (
-                <div key={item.text} className="rounded-xl border border-border bg-card p-5 shadow-panel backdrop-blur-md">
-                  <Icon className="mb-5 size-6 text-primary" />
-                  <p className="font-bold leading-6">{item.text}</p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      <footer id="contact" className="border-t border-border bg-surface px-6 py-14 lg:px-8">
-        <div className="mx-auto flex max-w-7xl flex-col justify-between gap-8 md:flex-row md:items-center">
-          <div>
-            <h2 className="text-3xl font-black">Empire Digitals</h2>
-            <p className="mt-2 max-w-xl text-muted-foreground">80 Booysens Rd, Johannesburg, Selby. Available Mon-Sat, 9:00-17:00.</p>
-          </div>
-          <div className="flex flex-col gap-3 text-sm font-bold md:items-end">
-            <a className="inline-flex items-center gap-2 text-primary" href="tel:+27105102699"><Phone className="size-4" /> +27 10 510 2699</a>
-            <a className="inline-flex items-center gap-2 text-primary" href="mailto:info@empiredigitals.org"><Mail className="size-4" /> <span suppressHydrationWarning>info@empiredigitals.org</span></a>
-            <span className="inline-flex items-center gap-2 text-muted-foreground"><MapPin className="size-4" /> Johannesburg, South Africa</span>
-          </div>
+        <div className="mx-auto mt-12 flex max-w-7xl flex-col items-center justify-between gap-4 border-t border-border/70 pt-6 text-xs text-muted-foreground sm:flex-row">
+          <p>&copy; {new Date().getFullYear()} Empire Labs. All rights reserved.</p>
+          <p className="font-mono uppercase tracking-[0.18em]">Johannesburg · South Africa</p>
         </div>
       </footer>
-    </main>
+    </div>
   );
 }
