@@ -1,0 +1,21 @@
+{
+  "name": "Empire Labs — AI & Product Engineering Studio",
+  "short_name": "Empire Labs",
+  "description": "Johannesburg AI and software engineering studio building autonomous platforms, secure digital products, mobile apps, and venture software including Nexora AI, PlayMyJam, and MrDocs.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0d111a",
+  "theme_color": "#0d111a",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/logo-mark.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

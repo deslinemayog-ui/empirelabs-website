@@ -31,23 +31,70 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Empire Labs | AI & Product Engineering Studio" },
+      { title: "Empire Labs | AI Software Development & Venture Studio in Johannesburg" },
       {
         name: "description",
         content:
-          "Empire Labs is a Johannesburg software and AI engineering studio building autonomous platforms, secure digital products, mobile apps, and venture software including Nexora AI and PlayMyJam.",
+          "Empire Labs (Empire Digitals) is a Johannesburg AI and software engineering studio building autonomous AI agents, secure mobile apps, web platforms, and digital ventures including Nexora AI, PlayMyJam, and MrDocs.",
+      },
+      {
+        name: "keywords",
+        content:
+          "Empire Labs, Empire Digitals, AI software development South Africa, Johannesburg software studio, autonomous AI agents, Nexora AI, PlayMyJam, MrDocs, custom web development, mobile app development Johannesburg, cybersecurity engineering, MVP development studio",
       },
       { name: "author", content: "Empire Labs" },
-      { property: "og:title", content: "Empire Labs | AI & Product Engineering Studio" },
+      { name: "creator", content: "Empire Labs" },
+      { name: "publisher", content: "Empire Labs" },
+      {
+        name: "robots",
+        content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+      },
+      {
+        name: "googlebot",
+        content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+      },
+      { name: "theme-color", content: "#0d111a" },
+      { name: "color-scheme", content: "dark" },
+      { name: "application-name", content: "Empire Labs" },
+      { name: "geo.region", content: "ZA-GP" },
+      { name: "geo.placename", content: "Johannesburg" },
+      { name: "geo.position", content: "-26.2141;28.0337" },
+      { name: "ICBM", content: "-26.2141, 28.0337" },
+      { property: "og:type", content: "website" },
+      { property: "og:locale", content: "en_ZA" },
+      { property: "og:site_name", content: "Empire Labs" },
+      { property: "og:url", content: "https://www.empirelabs.digital/" },
+      {
+        property: "og:title",
+        content: "Empire Labs | AI Software Development & Venture Studio",
+      },
       {
         property: "og:description",
         content:
-          "Autonomous AI platforms, secure software engineering, mobile apps, and digital ventures built in Johannesburg.",
+          "Johannesburg AI and product engineering studio building autonomous AI platforms, biometric security apps, and scalable ventures including Nexora AI, PlayMyJam, and MrDocs.",
       },
-      { property: "og:type", content: "website" },
+      { property: "og:image", content: "https://www.empirelabs.digital/logo.png" },
+      { property: "og:image:type", content: "image/png" },
+      { property: "og:image:alt", content: "Empire Labs — AI & Product Engineering Studio" },
       { name: "twitter:card", content: "summary_large_image" },
+      {
+        name: "twitter:title",
+        content: "Empire Labs | AI Software Development & Venture Studio",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "Autonomous AI platforms, secure mobile apps, and digital ventures engineered in Johannesburg — home of Nexora AI, PlayMyJam, and MrDocs.",
+      },
+      { name: "twitter:image", content: "https://www.empirelabs.digital/logo.png" },
+      { name: "twitter:image:alt", content: "Empire Labs — AI & Product Engineering Studio" },
     ],
     links: [
+      { rel: "canonical", href: "https://www.empirelabs.digital/" },
+      { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+      { rel: "icon", type: "image/png", sizes: "512x512", href: "/logo-mark.png" },
+      { rel: "apple-touch-icon", href: "/logo-mark.png" },
+      { rel: "manifest", href: "/site.webmanifest" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="48" y1="32" x2="464" y2="480" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#162033" />
+      <stop offset="100%" stop-color="#0B0F19" />
+    </linearGradient>
+    <linearGradient id="border" x1="32" y1="32" x2="480" y2="480" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.7" />
+      <stop offset="50%" stop-color="#3B82F6" stop-opacity="0.4" />
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.14" />
+    </linearGradient>
+    <linearGradient id="beam" x1="200" y1="256" x2="384" y2="256" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38BDF8" />
+      <stop offset="100%" stop-color="#3B82F6" />
+    </linearGradient>
+  </defs>
+  <rect x="12" y="12" width="488" height="488" rx="124" fill="url(#bg)" />
+  <rect x="12" y="12" width="488" height="488" rx="124" stroke="url(#border)" stroke-width="14" />
+  <path d="M128 128H348L384 164V176H176V336H384V384H128V128Z" fill="#F8FAFC" />
+  <rect x="200" y="232" width="112" height="48" rx="10" fill="url(#beam)" />
+  <rect x="336" y="232" width="48" height="48" rx="12" fill="#38BDF8" />
+</svg>

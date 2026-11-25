@@ -9,7 +9,6 @@ import {
   Cpu,
   DatabaseZap,
   FileSignature,
-  Globe2,
   GraduationCap,
   Layers3,
   LockKeyhole,
@@ -23,29 +22,155 @@ import {
   Rocket,
   ShieldCheck,
   Smartphone,
-  Sparkles,
   TrendingUp,
   Workflow,
   X,
 } from "lucide-react";
 
+import { EmpireLabsLogo } from "@/components/empire-labs-logo";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["Organization", "ProfessionalService"],
+      "@id": "https://www.empirelabs.digital/#organization",
+      name: "Empire Labs",
+      alternateName: "Empire Digitals",
+      url: "https://www.empirelabs.digital/",
+      logo: "https://www.empirelabs.digital/logo-mark.png",
+      image: "https://www.empirelabs.digital/logo.png",
+      email: "info@empiredigitals.org",
+      telephone: "+27-10-510-2699",
+      description:
+        "Johannesburg AI and software engineering studio building autonomous AI platforms, secure mobile apps, web systems, and digital ventures.",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "80 Booysens Rd, Selby",
+        addressLocality: "Johannesburg",
+        addressRegion: "Gauteng",
+        addressCountry: "ZA",
+      },
+      openingHoursSpecification: [
+        {
+          "@type": "OpeningHoursSpecification",
+          dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+          opens: "09:00",
+          closes: "17:00",
+        },
+      ],
+      areaServed: [
+        { "@type": "Country", name: "South Africa" },
+        { "@type": "Place", name: "Worldwide" },
+      ],
+      knowsAbout: [
+        "Autonomous AI Agents",
+        "Software Engineering",
+        "Mobile App Development",
+        "Web Application Development",
+        "Cybersecurity & Biometric Identity",
+        "Cloud Architecture",
+        "Product Design Systems",
+      ],
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.empirelabs.digital/#website",
+      url: "https://www.empirelabs.digital/",
+      name: "Empire Labs",
+      description:
+        "AI & Product Engineering Studio in Johannesburg building Nexora AI, PlayMyJam, and MrDocs.",
+      publisher: { "@id": "https://www.empirelabs.digital/#organization" },
+      inLanguage: "en-ZA",
+    },
+    {
+      "@type": "ItemList",
+      "@id": "https://www.empirelabs.digital/#ventures",
+      name: "Empire Labs Ventures & Software Portfolio",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          item: {
+            "@type": "WebApplication",
+            name: "Nexora AI",
+            url: "https://nexora.empirelabs.digital/",
+            applicationCategory: "BusinessApplication",
+            operatingSystem: "Web",
+            description:
+              "Autonomous AI workforce platform for job applications, international relocation and visa dossiers, investor pitch memos, and global scholarships.",
+            creator: { "@id": "https://www.empirelabs.digital/#organization" },
+          },
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          item: {
+            "@type": "WebApplication",
+            name: "PlayMyJam",
+            url: "https://playmyjam.empirelabs.digital/",
+            applicationCategory: "EntertainmentApplication",
+            operatingSystem: "Web",
+            description:
+              "Live nightlife music bidding platform connecting fans, DJs, venues, and promoters.",
+            creator: { "@id": "https://www.empirelabs.digital/#organization" },
+          },
+        },
+        {
+          "@type": "ListItem",
+          position: 3,
+          item: {
+            "@type": "WebApplication",
+            name: "MrDocs",
+            url: "https://mrdocs.empirelabs.digital/",
+            applicationCategory: "SecurityApplication",
+            operatingSystem: "Web",
+            description:
+              "Biometric document security and signing platform with facial verification, tamper-aware QR codes, and verifiable audit trails.",
+            creator: { "@id": "https://www.empirelabs.digital/#organization" },
+          },
+        },
+      ],
+    },
+  ],
+};
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Empire Labs | AI & Product Engineering Studio" },
+      { title: "Empire Labs | AI Software Development & Venture Studio in Johannesburg" },
       {
         name: "description",
         content:
-          "Empire Labs is a Johannesburg software and AI engineering studio building autonomous platforms, secure digital products, mobile apps, and venture software including Nexora AI, PlayMyJam, MrDocs, and The Lifestyle.",
+          "Empire Labs (Empire Digitals) builds autonomous AI platforms, secure mobile apps, and scalable web software in Johannesburg. Explore our ventures: Nexora AI, PlayMyJam, and MrDocs.",
       },
-      { property: "og:title", content: "Empire Labs | AI & Product Engineering Studio" },
+      { property: "og:url", content: "https://www.empirelabs.digital/" },
+      {
+        property: "og:title",
+        content: "Empire Labs | AI Software Development & Venture Studio",
+      },
       {
         property: "og:description",
         content:
-          "A Johannesburg software studio building autonomous AI products, secure platforms, mobile apps, and company ventures including Nexora AI and PlayMyJam.",
+          "Johannesburg software and AI studio engineering autonomous AI agents, biometric security systems, and digital ventures including Nexora AI, PlayMyJam, and MrDocs.",
+      },
+      {
+        name: "twitter:title",
+        content: "Empire Labs | AI Software Development & Venture Studio",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "Autonomous AI platforms, secure mobile apps, and digital ventures engineered in Johannesburg — home of Nexora AI, PlayMyJam, and MrDocs.",
+      },
+    ],
+    links: [{ rel: "canonical", href: "https://www.empirelabs.digital/" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify(structuredData),
       },
     ],
   }),
@@ -94,8 +219,8 @@ const projects: Project[] = [
     name: "PlayMyJam",
     tagline: "Live Music Bidding Platform",
     category: "Music Tech",
-    href: "https://playmyjam.empiredigitals.org/",
-    domain: "playmyjam.empiredigitals.org",
+    href: "https://playmyjam.empirelabs.digital/",
+    domain: "playmyjam.empirelabs.digital",
     status: "Live",
     icon: Music2,
     description:
@@ -108,27 +233,13 @@ const projects: Project[] = [
     name: "MrDocs",
     tagline: "Biometric Document Security",
     category: "Trust & Identity",
-    href: "https://play.google.com/store/apps/details?id=com.empiredigitals.doneDeal",
-    domain: "play.google.com/store",
-    status: "Android",
+    href: "https://mrdocs.empirelabs.digital/",
+    domain: "mrdocs.empirelabs.digital",
+    status: "Live",
     icon: FileSignature,
     description:
       "A tamper-evident signing platform pairing facial verification, cryptographic QR codes, and verifiable identity evidence for contracts, NDAs, and sensitive agreements.",
     highlights: ["Facial verification", "Tamper-aware QR", "Verifiable audit trails"],
-  },
-  {
-    id: "lifestyle",
-    index: "04",
-    name: "The Lifestyle",
-    tagline: "On-Demand Lifestyle Network",
-    category: "Marketplace",
-    href: "https://lifestyle.empiredigitals.org/",
-    domain: "lifestyle.empiredigitals.org",
-    status: "Live",
-    icon: Sparkles,
-    description:
-      "A curated marketplace connecting members to bookings, social experiences, private transport, and concierge services through polished mobile-first journeys.",
-    highlights: ["Marketplace UX", "Concierge bookings", "Mobile-first flows"],
   },
 ];
 
@@ -247,16 +358,11 @@ function Index() {
       {/* Sticky Header */}
       <header className="sticky top-0 z-50 border-b border-border/70 bg-background/75 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 lg:px-8">
-          <a href="#" className="group flex items-center gap-3" aria-label="Empire Labs home">
-            <span className="relative flex size-9 items-center justify-center rounded-lg border border-border bg-secondary text-foreground transition-colors group-hover:border-primary/50 group-hover:text-primary">
-              <Globe2 className="size-4" />
-            </span>
-            <div className="flex items-baseline gap-2.5">
-              <span className="font-display text-base font-bold tracking-tight">Empire Labs</span>
-              <span className="hidden font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground sm:inline">
-                JHB // ZA
-              </span>
-            </div>
+          <a href="#" className="group inline-flex items-center" aria-label="Empire Labs home">
+            <EmpireLabsLogo
+              showLocationTag
+              markClassName="transition-transform duration-200 group-hover:scale-105"
+            />
           </a>
 
           <nav className="hidden items-center gap-8 text-sm font-medium text-muted-foreground md:flex">
@@ -373,7 +479,7 @@ function Index() {
               {/* Studio Metrics Strip */}
               <div className="mt-12 grid max-w-xl grid-cols-3 gap-6 border-t border-border/80 pt-7">
                 <div>
-                  <p className="font-display text-2xl font-bold tracking-tight sm:text-3xl">04</p>
+                  <p className="font-display text-2xl font-bold tracking-tight sm:text-3xl">03</p>
                   <p className="mt-1 text-xs text-muted-foreground">Live ventures shipped</p>
                 </div>
                 <div>
@@ -401,12 +507,12 @@ function Index() {
                     </span>
                   </div>
                   <span className="inline-flex items-center gap-1.5 rounded-full border border-signal/30 bg-signal/10 px-2.5 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-signal">
-                    <span className="size-1.5 rounded-full bg-signal" /> 4 Active
+                    <span className="size-1.5 rounded-full bg-signal" /> 3 Active
                   </span>
                 </div>
 
                 {/* Project Switcher Tabs */}
-                <div className="grid grid-cols-2 gap-1.5 border-b border-border/80 bg-background/40 p-2.5 sm:grid-cols-4">
+                <div className="grid grid-cols-3 gap-1.5 border-b border-border/80 bg-background/40 p-2.5">
                   {projects.map((project) => {
                     const isActive = project.id === activeProject.id;
                     return (
@@ -514,8 +620,8 @@ function Index() {
                 </h2>
               </div>
               <p className="max-w-sm text-sm leading-6 text-muted-foreground">
-                Autonomous AI agents, live nightlife music economies, biometric document security,
-                and on-demand lifestyle networks built under one studio roof.
+                Autonomous AI agents, live nightlife music economies, and biometric document
+                security platforms built under one studio roof.
               </p>
             </div>
 
@@ -587,8 +693,8 @@ function Index() {
               </div>
             </article>
 
-            {/* Remaining 3 Ventures in Clean 3-Column Bento Grid */}
-            <div className="mt-6 grid gap-6 md:grid-cols-3">
+            {/* Remaining 2 Ventures in Clean 2-Column Grid */}
+            <div className="mt-6 grid gap-6 md:grid-cols-2">
               {secondaryProjects.map((project) => {
                 const Icon = project.icon;
                 return (
@@ -758,12 +864,7 @@ function Index() {
       <footer id="contact" className="border-t border-border/80 bg-surface/80 px-6 py-14 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-[1.2fr_0.8fr_1fr]">
           <div>
-            <div className="flex items-center gap-2.5">
-              <span className="flex size-8 items-center justify-center rounded-lg border border-border bg-secondary text-primary">
-                <Globe2 className="size-4" />
-              </span>
-              <span className="font-display text-lg font-bold tracking-tight">Empire Labs</span>
-            </div>
+            <EmpireLabsLogo markClassName="size-8" />
             <p className="mt-3 max-w-sm text-sm leading-6 text-muted-foreground">
               Software, autonomous AI, and digital venture engineering studio based in Johannesburg,
               South Africa.
